@@ -41,7 +41,7 @@ paths:
         Returns the health of the service and, optionally, detailed health
         observations for downstream dependencies or sub-components.
       tags:
-        - Health
+      - Health
       responses:
         '2XX':
           $ref: '#/components/responses/HealthyWithConcernsResponse'
@@ -133,7 +133,6 @@ components:
       - pass
       - ok
       - up
-      default: up
 
     UnhealthyStatus:
       type: string
@@ -148,13 +147,6 @@ components:
       - fail
       - error
       - down
-      default: fail
-
-    WarnStatus:
-      type: string
-      description: |
-        Case-insensitive service healthy, with some concerns, status.
-      const: warn
 
     Links:
       type: object
@@ -209,6 +201,7 @@ components:
         properties:
           status:
             $ref: '#/components/schemas/HealthyStatus'
+            default: up
 
     UnhealthyResponse:
       description: A service health representation.
@@ -220,6 +213,7 @@ components:
         properties:
           status:
             $ref: '#/components/schemas/UnhealthyStatus'
+            default: fail
 
     WarnResponse:
       description: A service health representation.
@@ -230,7 +224,10 @@ components:
         - status
         properties:
           status:
-            $ref: '#/components/schemas/WarnStatus'
+            type: string
+            description: |
+              Case-insensitive service healthy, with some concerns, status.
+            const: warn
 
     Checks:
       type: object

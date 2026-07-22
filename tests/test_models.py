@@ -31,22 +31,28 @@ class StatusResponseTests(unittest.TestCase):
     def test_healthy_response_accepts_all_supported_statuses(self) -> None:
         for value in ("pass", "ok", "up"):
             with self.subTest(status=value):
-                response = HealthyResponse(status=value)
+                response = HealthyResponse(status=HealthyStatus(value))
 
                 self.assertEqual(response.status, HealthyStatus(value))
 
     def test_unhealthy_response_accepts_all_supported_statuses(self) -> None:
         for value in ("fail", "error", "down"):
             with self.subTest(status=value):
-                response = UnhealthyResponse(status=value)
+                response = UnhealthyResponse(status=UnhealthyStatus(value))
 
                 self.assertEqual(response.status, UnhealthyStatus(value))
 
-    def test_healthy_and_unhealthy_responses_require_a_status(self) -> None:
-        for response_type in (HealthyResponse, UnhealthyResponse):
-            with self.subTest(response_type=response_type.__name__):
-                with self.assertRaises(ValidationError):
-                    response_type()
+    def test_healthy_response_defaults_to_up(self) -> None:
+        response = HealthyResponse()
+
+        self.assertEqual(response.status, HealthyStatus.UP)
+        self.assertEqual(response.model_dump(mode="json")["status"], "up")
+
+    def test_unhealthy_response_defaults_to_fail(self) -> None:
+        response = UnhealthyResponse()
+
+        self.assertEqual(response.status, UnhealthyStatus.FAIL)
+        self.assertEqual(response.model_dump(mode="json")["status"], "fail")
 
     def test_response_rejects_a_status_from_another_outcome(self) -> None:
         invalid_statuses = (
