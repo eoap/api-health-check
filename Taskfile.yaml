@@ -1,0 +1,59 @@
+# Copyright 2026 EOAP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: '3'
+
+includes:
+  json: https://raw.githubusercontent.com/Terradue/taskfile-utils/refs/heads/main/json.yaml
+  openapi: https://raw.githubusercontent.com/Terradue/taskfile-utils/refs/heads/main/openapi.yaml
+  quality: https://raw.githubusercontent.com/Terradue/taskfile-utils/refs/heads/main/quality.yaml
+
+tasks:
+  process_schema:
+    cmds:
+    - task: json:create_models
+      vars:
+        SCHEMA: './schemas/openapi.yaml'
+        OUTPUT: './src/eoap_api_health_check/__init__.py'
+        INPUT_FILE_TYPE: 'openapi'
+
+  generate_openapi_docs:
+    cmds:
+    - task: openapi:generate_docs
+      vars:
+        REMOVE_UNUSED_COMPONENTS: 'false'
+        API: './schemas/openapi.yaml'
+        OUTPUT: './docs/openapi.html'
+    - cp ./schemas/openapi.yaml ./docs
+
+  default:
+    cmds:
+    - task: process_schema
+    - task: generate_openapi_docs
+    - task: quality:lint
+    - task: quality:test
+    - task: quality:check
+
+  serve_docs:
+    desc: "Serve MkDocs site using hatch docs environment"
+    deps:
+    - generate_openapi_docs
+    cmds:
+    - |
+      uv run \
+      --no-cache \
+      --no-project \
+      --with mkdocs-material \
+      --with mkdocs-mermaid2-plugin \
+      mkdocs serve

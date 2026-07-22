@@ -1,0 +1,92 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eoap-api-health-check"
+dynamic = ["version"]
+description = 'EOAP HTTP API Health Check'
+
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-2.0"
+keywords = []
+authors = [
+  { name = "Fabrice Brito", email = "info@terradue.com" },
+  { name = "Simone Tripodi", email = "info@terradue.com"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "pydantic==2.13.4",
+]
+
+[project.urls]
+Documentation = "https://eoap.github.io/api-health-check/"
+Issues = "https://github.com/eoap/api-health-check/issues"
+Source = "https://github.com/eoap/api-health-check"
+
+[tool.hatch.version]
+path = "src/eoap_api_health_check/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/eoap_api_health_check tests}"
+
+[tool.coverage.run]
+source_pkgs = ["eoap_api_health_check", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/eoap_api_health_check/__about__.py",
+]
+
+[tool.coverage.paths]
+eoap_api_health_check = ["src/eoap_api_health_check", "*/eoap_api_health_check/src/eoap_api_health_check"]
+tests = ["tests", "*/eoap_api_health_check/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
+[tool.hatch.envs.test]
+skip-install = false
+
+dependencies = []
+
+
+[tool.hatch.envs.test.scripts]
+test = "python -m unittest discover -s tests -p 'test_*.py'"
+testv = "python -m unittest discover -s tests -p 'test_*.py' -v"
+cov = ["coverage run --source=src/eoap_api_health_check -m unittest discover -s tests -p 'test_*.py'", "coverage report"]
+test-show-setup = "python -m unittest discover -s tests -p 'test_*.py' -v"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
+[tool.hatch.envs.dev]
+description = "Development environment"
+dependencies = [
+  "pytest>=8.0",
+  "ruff",
+]
+
+[tool.hatch.envs.dev.scripts]
+lint = "ruff format ."
+check = "ruff check --fix"
