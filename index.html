@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><meta name="author" content="Fabrice Brito, Simone Tripodi" /><link rel="canonical" href="https://eoap.github.io/api-health-check/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Problems Registry</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="styles/css/app.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/api-health-check/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".">
+          <img src="imgs/icon-eoap.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#health-representation">Health representation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-python-package">Using the Python package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#project-artifacts">Project artifacts</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Problems Registry</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >EOAP Problem Types</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="already-exists.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="business-rule-violation.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-body-property-format.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-body-property-value.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-request-header-format.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-request-parameter-format.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-request-parameter-value.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-state-transition.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="license-cancelled.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="license-expired.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="missing-body-property.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="missing-request-header.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="missing-request-parameter.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="validation-error.md">None</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Common Problem Types</a>
+    <ul>
+                <li class="toctree-l2"><a class="" href="bad-request.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="forbidden.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="invalid-parameters.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="not-found.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="service-unavailable.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="server-error.md">None</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="unauthorized.md">None</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Schemas</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="" href="json-schema.md">JSON Schema</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="openapi.yaml">OpenAPI</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Problems Registry</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/eoap/api-health-check/edit/master/docs/index.md">Edit on eoap/api-health-check</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="eoap-openapi-health-check">EOAP OpenAPI Health Check</h1>
+<p>EOAP OpenAPI Health Check defines a consistent, machine-readable way for EOAP
+services to describe their operational health. It gives service implementers,
+platform operators, monitoring systems, and client applications a common
+contract instead of requiring each service to invent its own health payload.</p>
+<p>The project is based on the
+<a href="https://datatracker.ietf.org/doc/html/draft-inadarei-api-health-check-06"><code>application/health+json</code> Internet-Draft</a>.
+That draft defines the representation; this project supplies an OpenAPI 3.1
+description and uses the conventional <code>/health</code> path as an implementation
+choice.</p>
+<h2 id="purpose">Purpose</h2>
+<p>The contract is intended to make health information portable across EOAP
+components. A producer can return a predictable payload, while a consumer can
+validate and interpret that payload without depending on service-specific
+response shapes.</p>
+<p>The OpenAPI definition supports two complementary use cases:</p>
+<ul>
+<li><strong>API integration.</strong> Services in any language can implement the documented
+  <code>GET /health</code> operation and use the schema to validate responses or generate
+  client code.</li>
+<li><strong>Python integration.</strong> Pydantic models generated from the same definition
+  are published to PyPI as <code>eoap-api-health-check</code>, allowing Python services to
+  construct and validate compatible payloads directly.</li>
+</ul>
+<p>The OpenAPI file is therefore the source of truth. Generated Python models and
+rendered documentation are delivery formats of the same contract, not separate
+definitions to maintain by hand.</p>
+<h2 id="health-representation">Health representation</h2>
+<p>Every response contains a required <code>status</code>. The supported outcomes are:</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Accepted values</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Healthy</td>
+<td><code>pass</code>, <code>ok</code>, <code>up</code></td>
+<td>The service is operating normally.</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td><code>warn</code></td>
+<td>The service is available, but one or more observations need attention.</td>
+</tr>
+<tr>
+<td>Unhealthy</td>
+<td><code>fail</code>, <code>error</code>, <code>down</code></td>
+<td>The service cannot operate normally.</td>
+</tr>
+</tbody>
+</table>
+<p>The aliases make it easier to integrate services that already expose common
+framework conventions, including Node Terminus and Spring Boot terminology.</p>
+<p>A response may also contain:</p>
+<ul>
+<li><code>version</code>, <code>releaseId</code>, and <code>serviceId</code> to identify the running service and
+  release;</li>
+<li><code>description</code>, <code>notes</code>, and <code>output</code> to provide human-readable context;</li>
+<li><code>links</code> to related resources; and</li>
+<li><code>checks</code> with observations about dependencies or internal sub-components.</li>
+</ul>
+<p>Checks are grouped under keys such as <code>database:responseTime</code>. Each key maps to
+an array so that a logical component can report observations for one or more
+instances. An observation can include a component identifier and type, an
+observed value and unit, its own status, a timestamp, affected API endpoints,
+diagnostic output, and related links.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><span class="p">{</span>
+</span><span id="__span-0-2"><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;warn&quot;</span><span class="p">,</span>
+</span><span id="__span-0-3"><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><span class="w">  </span><span class="nt">&quot;notes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Database latency is elevated&quot;</span><span class="p">],</span>
+</span><span id="__span-0-5"><span class="w">  </span><span class="nt">&quot;checks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><span class="w">    </span><span class="nt">&quot;database:responseTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-7"><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-0-8"><span class="w">        </span><span class="nt">&quot;componentType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;datastore&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><span class="w">        </span><span class="nt">&quot;observedValue&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">900</span><span class="p">,</span>
+</span><span id="__span-0-10"><span class="w">        </span><span class="nt">&quot;observedUnit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ms&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11"><span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;warn&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12"><span class="w">        </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-07-22T10:00:00Z&quot;</span>
+</span><span id="__span-0-13"><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-0-14"><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-0-15"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-16"><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="using-the-python-package">Using the Python package</h2>
+<p>Install the generated Pydantic models from PyPI:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><span class="go">pip install eoap-api-health-check</span>
+</span></code></pre></div>
+<p>Then create or validate a response using the models exported by
+<code>eoap_api_health_check</code>:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span><span class="w"> </span><span class="nn">eoap_api_health_check</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentHealth</span><span class="p">,</span> <span class="n">WarnResponse</span>
+</span><span id="__span-2-2">
+</span><span id="__span-2-3"><span class="n">health</span> <span class="o">=</span> <span class="n">WarnResponse</span><span class="p">(</span>
+</span><span id="__span-2-4">    <span class="n">notes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Database latency is elevated&quot;</span><span class="p">],</span>
+</span><span id="__span-2-5">    <span class="n">checks</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-2-6">        <span class="s2">&quot;database:responseTime&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-2-7">            <span class="n">ComponentHealth</span><span class="p">(</span>
+</span><span id="__span-2-8">                <span class="n">componentType</span><span class="o">=</span><span class="s2">&quot;datastore&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9">                <span class="n">observedValue</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
+</span><span id="__span-2-10">                <span class="n">observedUnit</span><span class="o">=</span><span class="s2">&quot;ms&quot;</span><span class="p">,</span>
+</span><span id="__span-2-11">                <span class="n">status</span><span class="o">=</span><span class="s2">&quot;warn&quot;</span><span class="p">,</span>
+</span><span id="__span-2-12">            <span class="p">)</span>
+</span><span id="__span-2-13">        <span class="p">]</span>
+</span><span id="__span-2-14">    <span class="p">},</span>
+</span><span id="__span-2-15"><span class="p">)</span>
+</span><span id="__span-2-16">
+</span><span id="__span-2-17"><span class="n">payload</span> <span class="o">=</span> <span class="n">health</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The models use idiomatic <code>snake_case</code> Python attributes and accept the
+camel-cased OpenAPI property names as aliases. Use <code>by_alias=True</code> when
+serializing a response for the API.</p>
+<h2 id="project-artifacts">Project artifacts</h2>
+<ul>
+<li><a href="openapi.yaml">OpenAPI definition</a> — the complete API and schema contract.</li>
+<li><a href="openapi.html">Rendered OpenAPI reference</a> — an interactive view generated
+  from the definition.</li>
+<li><a href="https://pypi.org/project/eoap-api-health-check/">Python package</a> — generated
+  Pydantic models for Python applications.</li>
+<li><a href="https://github.com/eoap/api-health-check">Source repository</a> — schema,
+  generation workflow, and project history.</li>
+</ul>
+<p>Changes should begin in <code>schemas/openapi.yaml</code> in the source repository. The
+Pydantic models and documentation artifacts are regenerated from it before a
+new package version is published.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="openapi.yaml" class="btn btn-neutral float-right" title="OpenAPI">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%20License%202.0-blue"" alt="Apache License, Version 2.0" /></a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/eoap/api-health-check/" class="fa fa-code-fork" style="color: #fcfcfc"> eoap/api-health-check</a>
+        </span>
+    
+    
+    
+      <span><a href="openapi.yaml" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="javascripts/config.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-07-22 21:17:02.055818+00:00
+-->

@@ -1,0 +1,306 @@
+#   Copyright 2026 EOAP
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an 'AS IS' BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+openapi: 3.1.0
+
+info:
+  title: EOAP HTTP API Health Check
+  version: 0.1.0
+  description: |
+    Initial OpenAPI definition for a health-check endpoint following
+    [draft-inadarei-api-health-check-06](https://datatracker.ietf.org/doc/html/draft-inadarei-api-health-check-06).
+    
+    The Internet-Draft specifies the `application/health+json` response format; the `/health` path used here is a
+    conventional implementation choice.
+
+  contact:
+    name: EOAP HTTP API Health Check
+    url: https://eoap.github.io/api-health-check
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Get service health
+      description: |
+        Returns the health of the service and, optionally, detailed health
+        observations for downstream dependencies or sub-components.
+      tags:
+      - Health
+      responses:
+        '2XX':
+          $ref: '#/components/responses/HealthyWithConcernsResponse'
+        '3XX':
+          $ref: '#/components/responses/HealthyWithConcernsResponse'
+        '4XX':
+          $ref: '#/components/responses/UnhealthyResponse'
+        '5XX':
+          $ref: '#/components/responses/UnhealthyResponse'
+
+components:
+  responses:
+    UnhealthyResponse:
+      description: The service is unhealthy (`fail`).
+      content:
+        application/health+json:
+          schema:
+            $ref: '#/components/schemas/UnhealthyResponse'
+          example:
+            status: fail
+            output: A required dependency is unavailable
+
+    HealthyWithConcernsResponse:
+      description: |
+        The service is healthy (`pass`) or healthy with concerns (`warn`).
+        The draft also permits 3xx responses for these statuses.
+      headers:
+        Cache-Control:
+          description: |
+            Freshness information for the health representation. The draft
+            recommends assigning a freshness lifetime.
+          schema:
+            type: string
+          example: max-age=60
+      content:
+        application/health+json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/HealthyResponse'
+            - $ref: '#/components/schemas/WarnResponse'
+          examples:
+            pass:
+              summary: Healthy service
+              value:
+                status: pass
+                version: '1'
+                releaseId: 1.2.2
+                serviceId: f03e522f-1f44-4062-9b55-9587f91c9c41
+                description: Health of authorization service
+                checks:
+                  cassandra:responseTime:
+                  - componentId: dfd6cf2b-1b6e-4412-a0b8-f6f7797a60d2
+                    componentType: datastore
+                    observedValue: 250
+                    observedUnit: ms
+                    status: pass
+                    affectedEndpoints:
+                      - /users/{userId}
+                    time: '2018-01-17T03:36:48Z'
+                links:
+                  about: https://api.example.com/about/authz
+            warn:
+              summary: Healthy service with concerns
+              value:
+                status: warn
+                notes:
+                - Elevated database response time
+                checks:
+                  cassandra:responseTime:
+                  - componentType: datastore
+                    observedValue: 900
+                    observedUnit: ms
+                    status: warn
+                    time: '2026-07-22T10:00:00Z'
+                    output: Response time is above the preferred threshold
+      
+
+  schemas:
+    HealthyStatus:
+      type: string
+      description: |
+        Case-insensitive service health status. 
+
+        Acceptable aliases:
+        - `pass`;
+        - `ok` to support Node's Terminus;
+        - `up` for Java's SpringBoot.
+      enum:
+      - pass
+      - ok
+      - up
+
+    UnhealthyStatus:
+      type: string
+      description: |
+        Case-insensitive service unhealth status. 
+
+        Acceptable aliases:
+        - `fail`;
+        - `error` to support Node's Terminus;
+        - `down` for Java's SpringBoot.
+      enum:
+      - fail
+      - error
+      - down
+
+    Links:
+      type: object
+      description: |
+        Link-relation names or URIs mapped to URI values. A `self` relation may
+        identify a URI whose HTTP response code can be used for health checks.
+      additionalProperties:
+        type: string
+        format: uri
+      examples:
+        - self: https://api.example.com/health
+          about: https://api.example.com/about
+
+    BaseHealthResponse:
+      type: object
+      description: A service health representation.
+      properties:
+        version:
+          type: string
+          description: Public version of the service.
+        releaseId:
+          type: string
+          description: Identifier of the deployed service release.
+        notes:
+          type: array
+          description: Notes relevant to the current health state.
+          items:
+            type: string
+        output:
+          type: string
+          description: |
+            Raw error or diagnostic output for `fail` or `warn`. It should be
+            omitted when status is `pass`.
+        checks:
+          $ref: '#/components/schemas/Checks'
+        links:
+          $ref: '#/components/schemas/Links'
+        serviceId:
+          type: string
+          description: Unique service identifier within the application scope.
+        description:
+          type: string
+          description: Human-readable description of the service.
+
+    HealthyResponse:
+      description: A service health representation.
+      allOf:
+      - $ref: '#/components/schemas/BaseHealthResponse'
+      - type: object
+        required:
+        - status
+        properties:
+          status:
+            $ref: '#/components/schemas/HealthyStatus'
+            default: up
+
+    UnhealthyResponse:
+      description: A service health representation.
+      allOf:
+      - $ref: '#/components/schemas/BaseHealthResponse'
+      - type: object
+        required:
+        - status
+        properties:
+          status:
+            $ref: '#/components/schemas/UnhealthyStatus'
+            default: fail
+
+    WarnResponse:
+      description: A service health representation.
+      allOf:
+      - $ref: '#/components/schemas/BaseHealthResponse'
+      - type: object
+        required:
+        - status
+        properties:
+          status:
+            type: string
+            description: |
+              Case-insensitive service healthy, with some concerns, status.
+            const: warn
+
+    Checks:
+      type: object
+      description: |
+        Health observations grouped by logical dependency or sub-component.
+        Keys may use the form `{componentName}:{measurementName}`. Each value is
+        an array, including for a single-node component.
+      additionalProperties:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/components/schemas/ComponentHealth'
+      examples:
+        - datastore:connections:
+            - componentType: datastore
+              observedValue: 75
+              status: warn
+
+    ComponentHealth:
+      type: object
+      description: |
+        Health details for one instance or observation of a dependency or
+        sub-component. Additional implementation-defined keys are permitted.
+      minProperties: 1
+      properties:
+        componentId:
+          type: string
+          description: Unique identifier of a sub-component instance.
+        componentType:
+          type: string
+          description: |
+            Component type. Suggested values include `component`, `datastore`,
+            and `system`; standard terms or URIs may also be used.
+          examples:
+            - datastore
+        observedValue:
+          description: Any valid JSON value observed by the health check.
+        observedUnit:
+          type: string
+          description: |
+            Unit for `observedValue`, preferably a standard term, abbreviation,
+            or URI.
+          examples:
+            - ms
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/HealthyStatus'
+          - $ref: '#/components/schemas/UnhealthyStatus'
+          - $ref: '#/components/schemas/WarnStatus'
+        affectedEndpoints:
+          type: array
+          description: |
+            URI Templates for API endpoints affected by this observation. It
+            should be omitted when the component status is `pass`.
+          items:
+            type: string
+            description: URI Template as defined by RFC 6570.
+          examples:
+            - - /users/{userId}
+              - /customers/{customerId}/status
+        time:
+          type: string
+          format: date-time
+          description: Time at which the observed value was recorded.
+        output:
+          type: string
+          description: |
+            Raw error or diagnostic output for the component. It should be
+            omitted when the component status is `pass`.
+        links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: true
+
+tags:
+- name: Health
+  description: Service health and dependency observations.
